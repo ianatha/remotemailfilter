@@ -1,0 +1,3 @@
+#!/bin/bash
+PATH=/Users/example/remotemailfilter-
+/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Commands/java -jar *dependencies*jar
