@@ -459,11 +459,7 @@ public class RemoteFilter extends Thread {
 		}
 
 		if (password == null) {
-			System.out.print("Password? ");
-			System.out.flush();
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					System.in));
-			password = in.readLine();
+			password = new String(System.console().readPassword("Password? "));
 
 			Cipher rsa;
 			try {
