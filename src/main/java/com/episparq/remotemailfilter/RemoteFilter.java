@@ -145,9 +145,9 @@ public class RemoteFilter extends Thread {
 			if (target != null) {
 				System.out.println("Moving to " + target);
 				// BEGIN TRANSACTION
-				IMAPFolder f = ((IMAPFolder) store.getFolder("INBOX/" + target));
+				IMAPFolder f = ((IMAPFolder) store.getFolder(target));
 				if (!f.exists()) {
-					System.out.println("Creating INBOX/" + target);
+					System.out.println("Creating " + target);
 					f.create(Folder.HOLDS_FOLDERS | Folder.HOLDS_MESSAGES);
 				}
 				m.getFolder().copyMessages(new Message[] { m }, f);
@@ -420,7 +420,7 @@ public class RemoteFilter extends Thread {
 
 			/*
 			 * After some experimentation, I was able to access
-			 * private-key–certificate entries in the KeychainStore. However,
+			 * private-key certificate entries in the KeychainStore. However,
 			 * passwords in my Keychain did not show up (no alias was listed),
 			 * and when I tried to add a KeyStore.SecretKeyEntry (which is what
 			 * you'd need to hold a password) it failed with the message,

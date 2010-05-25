@@ -85,8 +85,7 @@ InternetAddress me = new InternetAddress("username@example.com", true);
 for (Address a : m.getRecipients(RecipientType.TO)) {
 	if (a.equals(me)) {
 		target = null;
-		break;
 	}
 }
 
-
+target = "INBOX/" + target;
