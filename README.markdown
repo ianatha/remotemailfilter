@@ -1,14 +1,11 @@
-<html>
-<head>
-<title>Remote Mail Filter</title>
-</head>
-<body>
-<h1>Remote Mail Filter</h1>
-<p>This piece of software is for Mac OS X only, for now. It needs Java 1.6 so you should have a recent version of Mac OS X. I <i>think</i> Leopard and newer would work.</p>
-<p>For now, installation is a bit invovled and the deamon ain't pretty. You should <a href="http://spreadsheets.google.com/viewform?formkey=dGg5VXYwT0IxWWctdUJfenNpdkV6WlE6MQ">give me your email</a> so I can send you a notice when there's a new version. You will receive two notices tops, as I will have an auto-update feature by the end of May.</p>
+This piece of software is designed for Mac OS X only, but will work on other platforms.
+It needs Java 1.6 so you should have a recent version of Mac OS X.
+<
+For now, installation is a bit invovled and the deamon ain't pretty. You should [give me your email]("http://spreadsheets.google.com/viewform?formkey=dGg5VXYwT0IxWWctdUJfenNpdkV6WlE6MQ), or watch this project on github, so you can be notified when there's a new version.
 
-<p>To install:
-<pre>
+To Install
+===========
+
 1. Open up your Terminal (use Spotlight, if needed).
 2. Type: curl http://thatha.org/remotemailfilter/remotefilter.tar.gz | tar -zxf -
 3. Edit remotemailfilter.properties/ If you're really into the Terminal stuff, you can use
@@ -28,9 +25,8 @@ mv rules.groovy ~/rules.groovy
 5. Execute the deamon by typing
 java -jar remotemailfilter.jar
 
-6. The first time it will ask for your password. When you type it, it won't be hidden--sorry. It will encrypt it and store it in a _very_ safe way. Safer than Thunderbird, equivalent to Apple Mail.
+6. The first time it will ask for your password. It will encrypt it and store it in a _very_ safe way. Safer than Thunderbird, equivalent to Apple Mail.
 
 7. It will print messages as it processes mail. If you change your rules, you need to restart the deamon. Kill it by hitting Ctrl-C, and restart it by typing "java -jar remotemailfilter.jar".
 
 8. If you close your Terminal, the deamon will be killed. It will be come prettier (and terminal-less) in the next version.
-</body>
