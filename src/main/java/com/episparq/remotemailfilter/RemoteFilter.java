@@ -324,11 +324,13 @@ public class RemoteFilter extends Thread {
             Cipher rsa;
             try {
                 rsa = Cipher.getInstance("RSA");
-                rsa.init(Cipher.ENCRYPT_MODE, key.getCertificate());
-                Writer os = new OutputStreamWriter(new CipherOutputStream(
-                        new FileOutputStream(SECRETS_FILENAME), rsa));
-                os.write(password);
-                os.close();
+                if (key != null) {
+                    rsa.init(Cipher.ENCRYPT_MODE, key.getCertificate());
+                    Writer os = new OutputStreamWriter(new CipherOutputStream(
+                            new FileOutputStream(SECRETS_FILENAME), rsa));
+                    os.write(password);
+                    os.close();
+                }
             } catch (Exception e) {
                 logger.error("cannot store password", e);
             }
