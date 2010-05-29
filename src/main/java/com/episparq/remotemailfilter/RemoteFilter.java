@@ -79,13 +79,13 @@ public class RemoteFilter extends Thread {
             throws RemoteFilterException {
         this.setDaemon(true);
 
-        store = getRemoteStore();
         rules = rulesSource;
         this.hostname = hostname;
         this.port = port;
         this.user = user;
         this.password = password;
         this.ssl = ssl;
+        store = getRemoteStore();
     }
 
     private IMAPStore getRemoteStore() throws RemoteFilterException {
