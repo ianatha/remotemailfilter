@@ -214,6 +214,12 @@ public class RemoteFilter extends Thread {
                 } catch (RemoteFilterException ex) {
                     logger.error("error reconnecting...", ex);
                 }
+                try {
+                    inbox = (IMAPFolder) store.getFolder("INBOX");
+                    inbox.open(Folder.READ_WRITE);
+                } catch (MessagingException ex) {
+                    throw new FatalRemoteFilterError(ex);
+                }
             } catch (Exception e) {
                 logger.error("error idling, exiting...", e);
                 break;
