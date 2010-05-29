@@ -153,55 +153,55 @@ public class RemoteFilter extends Thread {
     public boolean processRead = false;
 
     public void run() {
-        assert (store != null);
-        IMAPFolder inbox;
-        try {
-            inbox = (IMAPFolder) store.getFolder("INBOX");
-            inbox.open(Folder.READ_WRITE);
-        } catch (MessagingException e) {
-            throw new FatalRemoteFilterError(e);
-        }
-
-        if (processUnread) {
-            // Process unread messages already in the folder.
-            try {
-                Message[] unreadMessages = inbox.search(new FlagTerm(new Flags(Flags.Flag.SEEN), false));
-                for (Message m : unreadMessages) {
-                    processMessage(m);
-                }
-            } catch (MessagingException e) {
-                logger.error("error processing unread", e);
-            }
-        }
-
-        if (processRead) {
-            // Process unread messages already in the folder.
-            try {
-                Message[] readMessages = inbox.search(new FlagTerm(new Flags(Flags.Flag.SEEN), true));
-                for (Message m : readMessages) {
-                    processMessage(m);
-                }
-            } catch (MessagingException e) {
-                logger.error("error processing unread", e);
-            }
-        }
-
-        MessageCountListener mcl = new MessageCountListener() {
-            public void messagesAdded(MessageCountEvent messageCountEvent) {
-                Message[] messages = messageCountEvent.getMessages();
-                for (Message m : messages) {
-                    processMessage(m);
-                }
-            }
-
-            public void messagesRemoved(MessageCountEvent messageCountEvent) {
-                // Intentionally left empty.
-            }
-        };
-
-        inbox.addMessageCountListener(mcl);
-
         while (true) {
+            assert (store != null);
+            IMAPFolder inbox;
+            try {
+                inbox = (IMAPFolder) store.getFolder("INBOX");
+                inbox.open(Folder.READ_WRITE);
+            } catch (MessagingException e) {
+                throw new FatalRemoteFilterError(e);
+            }
+
+            if (processUnread) {
+                // Process unread messages already in the folder.
+                try {
+                    Message[] unreadMessages = inbox.search(new FlagTerm(new Flags(Flags.Flag.SEEN), false));
+                    for (Message m : unreadMessages) {
+                        processMessage(m);
+                    }
+                } catch (MessagingException e) {
+                    logger.error("error processing unread", e);
+                }
+            }
+
+            if (processRead) {
+                // Process unread messages already in the folder.
+                try {
+                    Message[] readMessages = inbox.search(new FlagTerm(new Flags(Flags.Flag.SEEN), true));
+                    for (Message m : readMessages) {
+                        processMessage(m);
+                    }
+                } catch (MessagingException e) {
+                    logger.error("error processing unread", e);
+                }
+            }
+
+            MessageCountListener mcl = new MessageCountListener() {
+                public void messagesAdded(MessageCountEvent messageCountEvent) {
+                    Message[] messages = messageCountEvent.getMessages();
+                    for (Message m : messages) {
+                        processMessage(m);
+                    }
+                }
+
+                public void messagesRemoved(MessageCountEvent messageCountEvent) {
+                    // Intentionally left empty.
+                }
+            };
+
+            inbox.addMessageCountListener(mcl);
+
             try {
                 inbox.idle();
             } catch (MessagingException e) {
@@ -215,13 +215,6 @@ public class RemoteFilter extends Thread {
                     store = getRemoteStore();
                 } catch (RemoteFilterException ex) {
                     logger.error("error reconnecting...", ex);
-                }
-                try {
-                    inbox = (IMAPFolder) store.getFolder("INBOX");
-                    inbox.open(Folder.READ_WRITE);
-                    inbox.addMessageCountListener(mcl);
-                } catch (MessagingException ex) {
-                    throw new FatalRemoteFilterError(ex);
                 }
             } catch (Exception e) {
                 logger.error("error idling, exiting...", e);
