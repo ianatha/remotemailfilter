@@ -186,7 +186,7 @@ public class RemoteFilter extends Thread {
             }
         }
 
-        inbox.addMessageCountListener(new MessageCountListener() {
+        MessageCountListener mcl = new MessageCountListener() {
             public void messagesAdded(MessageCountEvent messageCountEvent) {
                 Message[] messages = messageCountEvent.getMessages();
                 for (Message m : messages) {
@@ -197,7 +197,9 @@ public class RemoteFilter extends Thread {
             public void messagesRemoved(MessageCountEvent messageCountEvent) {
                 // Intentionally left empty.
             }
-        });
+        };
+
+        inbox.addMessageCountListener(mcl);
 
         while (true) {
             try {
@@ -217,6 +219,7 @@ public class RemoteFilter extends Thread {
                 try {
                     inbox = (IMAPFolder) store.getFolder("INBOX");
                     inbox.open(Folder.READ_WRITE);
+                    inbox.addMessageCountListener(mcl);
                 } catch (MessagingException ex) {
                     throw new FatalRemoteFilterError(ex);
                 }
