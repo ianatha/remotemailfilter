@@ -2,7 +2,7 @@ This piece of software is designed for Mac OS X only, but will work on other pla
 It needs Java 1.6 so you should have a recent version of Mac OS X.
 
 
-For now, installation is a bit invovled and the deamon ain't pretty. You should [give me your email]("http://spreadsheets.google.com/viewform?formkey=dGg5VXYwT0IxWWctdUJfenNpdkV6WlE6MQ), or watch this project on github, so you can be notified when there's a new version.
+For now, installation is a bit invovled and the deamon ain't pretty. You should watch this project on github, so you can be notified when there's a new version.
 
 To Install
 ===========
