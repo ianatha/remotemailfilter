@@ -109,12 +109,12 @@ public class RemoteFilter extends Thread {
 
             Binding bindings = new Binding();
             bindings.setVariable("m", m);
+            bindings.setVariable("target", null);
             GroovyShell groovy = new GroovyShell(bindings);
 
             groovy.evaluate(rules);
 
             String target = (String) groovy.getVariable("target");
-
 
             if (target != null) {
                 logger.info("Moving to " + target);
