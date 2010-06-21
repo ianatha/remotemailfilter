@@ -145,6 +145,7 @@ public class RemoteFilter extends Thread {
                         ff.expunge();
                         // COMMIT
                         // ff.open(Folder.READ_WRITE);
+                        break;
                     } catch (MessagingException e) {
                         logger.warn("messaging exception trying to get/create target folder retrying: " + (i + 1) + " of " + max, e);
                         Thread.sleep(100 * (i + 1));
