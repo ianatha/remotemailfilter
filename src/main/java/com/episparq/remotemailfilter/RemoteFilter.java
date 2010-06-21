@@ -119,29 +119,37 @@ public class RemoteFilter extends Thread {
             if (target != null) {
                 logger.info("Moving to " + target);
                 // BEGIN TRANSACTION
-                IMAPFolder f = ((IMAPFolder) store.getFolder(target));
-                if (!f.exists()) {
-                    logger.info("Creating " + target);
-                    f.create(Folder.HOLDS_FOLDERS | Folder.HOLDS_MESSAGES);
-                }
-                int max = 10;
+                final int max = 50;
+                IMAPFolder f = null;
                 for (int i = 0; i < max; i++) {
                     try {
-                        m.getFolder().copyMessages(new Message[]{m}, f);
-                        break;
-                    } catch (FolderNotFoundException e) {
-                        logger.warn("folder appears not to exist retrying " + (i + 1) + " of " + max, e);
+                        f = ((IMAPFolder) store.getFolder(target));
+                        if (!f.exists()) {
+                            logger.info("Creating " + target);
+                            f.create(Folder.HOLDS_FOLDERS | Folder.HOLDS_MESSAGES);
+                        }
+                        for (int j = 0; j < max; j++) {
+                            try {
+                                m.getFolder().copyMessages(new Message[]{m}, f);
+                                break;
+                            } catch (FolderNotFoundException e) {
+                                logger.warn("folder appears not to exist retrying " + (j + 1) + " of " + max, e);
+                                Thread.sleep(100 * (j + 1));
+                            }
+                        }
+                        // Is there a way to verify the message was copied in order to
+                        // fake transactions?
+                        m.setFlag(Flags.Flag.DELETED, true);
+                        Folder ff = m.getFolder();
+
+                        ff.expunge();
+                        // COMMIT
+                        // ff.open(Folder.READ_WRITE);
+                    } catch (MessagingException e) {
+                        logger.warn("messaging exception trying to get/create target folder retrying: " + (i + 1) + " of " + max, e);
                         Thread.sleep(100 * (i + 1));
                     }
                 }
-                // Is there a way to verify the message was copied in order to
-                // fake transactions?
-                m.setFlag(Flags.Flag.DELETED, true);
-                Folder ff = m.getFolder();
-
-                ff.expunge();
-                // COMMIT
-                // ff.open(Folder.READ_WRITE);
             }
         } catch (Exception e) {
             logger.error("error processing message", e);
