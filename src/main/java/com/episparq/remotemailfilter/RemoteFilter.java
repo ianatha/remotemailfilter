@@ -159,6 +159,10 @@ public class RemoteFilter extends Thread {
             try {
                 inbox = (IMAPFolder) store.getFolder("INBOX");
                 inbox.open(Folder.READ_WRITE);
+            } catch (IllegalStateException e) {
+                logger.error("failed to open inbox", e);
+                try { Thread.sleep(10000); } catch (InterruptedException ex) {}
+                continue;
             } catch (MessagingException e) {
                 logger.error("failed to open inbox", e);
                 try { Thread.sleep(10000); } catch (InterruptedException ex) {}
