@@ -102,7 +102,7 @@ public class RemoteFilter extends Thread {
         }
     }
 
-    public void processMessage(Message m) {
+    public synchronized void processMessage(Message m) {
 
         try {
             logger.info("From: " + m.getFrom()[0] + " Message: " + m.getSubject());
